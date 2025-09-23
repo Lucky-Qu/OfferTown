@@ -1,0 +1,9 @@
+server:
+  host: localhost
+  port: 7777
+
+mysql:
+  username: offertown_dev
+  password: offertown_dev_password
+  host: localhost
+  port: 3306
