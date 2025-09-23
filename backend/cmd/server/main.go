@@ -1,4 +1,4 @@
-//main.go
+//Package main main.go
 //
 //功能：
 //- 启动服务
@@ -8,6 +8,15 @@
 
 package main
 
-func main() {
+import (
+	"backend/configs"
+)
 
+func main() {
+	//读取配置文档
+	err := configs.InitConfigs()
+	//读取配置文档出错,触发panic
+	if err != nil {
+		panic(err)
+	}
 }
