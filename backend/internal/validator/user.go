@@ -17,7 +17,7 @@ import (
 )
 
 func UsernameCheck(username string) bool {
-	//用户名长度不小于2，不大于20
+	//用户名长度不小于2，不大于20(中文算作两个字符)
 	if len(username) < 2 || len(username) > 20 {
 		return false
 	}
