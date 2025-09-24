@@ -35,6 +35,15 @@ func PasswordCheck(password string) bool {
 	if !(len(password) >= 8 && len(password) <= 20) {
 		return false
 	}
+	//密码只能包含0~9,a~z,A~Z,!~/
+	for _, v := range password {
+		if !(('0' <= v && v <= '9') || // 数字
+			(v >= 'a' && v <= 'z') || // 小写字母
+			(v >= 'A' && v <= 'Z') || // 大写字母
+			(v >= '!' && v <= '~')) { // 特殊字符
+			return false
+		}
+	}
 	return true
 }
 
