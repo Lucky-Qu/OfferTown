@@ -13,6 +13,7 @@ package validator
 
 import (
 	"backend/internal/repository"
+	"unicode"
 )
 
 func UsernameCheck(username string) bool {
@@ -20,9 +21,9 @@ func UsernameCheck(username string) bool {
 	if len(username) < 2 || len(username) > 20 {
 		return false
 	}
-	//用户名只允许包含0~9,a~z,A~Z,-,_,.
-	for _, v := range username {
-		if !((v >= '0' && v <= '9') || (v >= 'a' && v <= 'z') || (v >= 'A' && v <= 'Z') || v == '-' || v == '_' || v == '.') {
+	//用户名只允许包含中文,字母,数字,-,_,.
+	for _, v := range []rune(username) {
+		if !unicode.IsLetter(v) && !unicode.IsNumber(v) && v != '_' && v != '-' && v != '.' {
 			return false
 		}
 	}
