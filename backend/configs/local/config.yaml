@@ -7,3 +7,4 @@ mysql:
   password: offertown_dev_password
   host: localhost
   port: 3306
+  database_name: offertown_database_dev
