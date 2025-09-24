@@ -30,8 +30,8 @@ func UsernameCheck(username string) bool {
 }
 
 func PasswordCheck(password string) bool {
-	//密码必须大于八位,小于二十位
-	if !(len(password) > 8 && len(password) < 20) {
+	//密码必须大于等于八位,小于等于二十位
+	if !(len(password) >= 8 && len(password) <= 20) {
 		return false
 	}
 	return true
