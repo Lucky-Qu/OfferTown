@@ -1,12 +1,13 @@
 package router
 
-//Package router router.go
+// Package router router.go
 //
-//功能：
-//- 将请求分发至api层
+// 功能:
+// - 分发前端请求到对应api
 //
-//作者: LuckyQu
-//日期: 2025-09-24
+// 作者: LuckyQu
+// 创建日期: 2025-09-24
+// 修改日期: 2025-09-24
 
 import (
 	"backend/configs"
@@ -21,6 +22,12 @@ func newRouter() *gin.Engine {
 	router := server.Group("/")
 	{
 		router.GET("/ping", api.PingHandler())
+
+		// 用户相关api
+		user := router.Group("/user")
+		{
+			user.POST("/register", api.UserRegisterHandler())
+		}
 	}
 
 	return server
