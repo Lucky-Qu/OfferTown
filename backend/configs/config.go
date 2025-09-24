@@ -1,10 +1,11 @@
 // Package configs config.go
 //
-// 功能：
+// 功能:
 // - 读取配置文件存储到全局变量中
 //
 // 作者: LuckyQu
-// 日期: 2025-09-23
+// 创建日期: 2025-09-23
+// 修改日期: 2025-09-24
 package configs
 
 import (
@@ -23,10 +24,11 @@ type Conf struct {
 
 // Mysql Mysql配置文件类型定义
 type Mysql struct {
-	Username string `yaml:"username"`
-	Password string `yaml:"password"`
-	Host     string `yaml:"host"`
-	Port     int    `yaml:"port"`
+	Username     string `yaml:"username"`
+	Password     string `yaml:"password"`
+	Host         string `yaml:"host"`
+	Port         int    `yaml:"port"`
+	DatabaseName string `yaml:"database_name"`
 }
 
 // Server 服务器配置文件类型定义
