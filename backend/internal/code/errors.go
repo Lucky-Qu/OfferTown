@@ -5,7 +5,7 @@
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-24
-// 修改日期: 2025-09-24
+// 修改日期: 2025-09-25
 
 package code
 
@@ -22,6 +22,9 @@ const (
 	DatabaseError Code = 3001
 
 	BindFailed Code = 4001
+
+	EncryptError = 5001
+	VerifyError  = 5002
 )
 
 // Msg 返回代码对应的信息

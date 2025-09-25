@@ -5,7 +5,7 @@
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-24
-// 修改日期: 2025-09-24
+// 修改日期: 2025-09-25
 
 package model
 
@@ -13,8 +13,8 @@ import "gorm.io/gorm"
 
 type User struct {
 	gorm.Model
-	Username   string `json:"username"`
-	Password   string `json:"password"`
-	Signature  string `json:"signature"`
-	AvatarPath string `json:"avatar_path"`
+	Username          string `json:"username"`
+	EncryptedPassword string `json:"encrypted_password"`
+	Signature         string `json:"signature"`
+	AvatarPath        string `json:"avatar_path"`
 }
