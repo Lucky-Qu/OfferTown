@@ -3,10 +3,11 @@
 // 功能:
 // - 数据库操作下的用户注册
 // - 数据库操作下的检查用户是否存在
+// - 通过用户名获得用户对象
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-24
-// 修改日期: 2025-09-24
+// 修改日期: 2025-09-25
 
 package repository
 
@@ -36,4 +37,17 @@ func CheckUsername(username string) (bool, error) {
 		return true, nil
 	}
 	return false, nil
+}
+
+// GetUserByUsername 通过用户名获得用户对象
+func GetUserByUsername(username string) (*model.User, error) {
+	var user model.User
+	if err := getDB().
+		Model(&model.User{}).
+		Where("username = ?", username).
+		First(&user).
+		Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
 }
