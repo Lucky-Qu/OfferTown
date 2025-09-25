@@ -8,3 +8,9 @@ mysql:
   host: localhost
   port: 3306
   database_name: offertown_database_dev
+
+argon2:
+  times: 3
+  memory: 65535
+  threads: 2
+  keyLen: 32
