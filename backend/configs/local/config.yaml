@@ -14,3 +14,11 @@ argon2:
   memory: 65535
   threads: 2
   keyLen: 32
+
+jwt:
+  secret: justATestSecret
+
+redis:
+  host: localhost
+  port: 6379
+  password:
