@@ -18,13 +18,21 @@ const (
 	InvalidUsername      Code = 2001
 	UsernameAlreadyExist Code = 2002
 	InvalidPassword      Code = 2003
+	UserNotExists        Code = 2004
+	PasswordWrong        Code = 2005
+	UnLoginUser          Code = 2006
 
 	DatabaseError Code = 3001
 
 	BindFailed Code = 4001
 
-	EncryptError = 5001
-	VerifyError  = 5002
+	EncryptError Code = 5001
+	VerifyError  Code = 5002
+
+	JWTSignFail  Code = 6001
+	InvalidToken Code = 6002
+
+	CacheError Code = 7001
 )
 
 // Msg 返回代码对应的信息
@@ -42,6 +50,22 @@ func (code Code) Msg() string {
 		return "数据库错误，请稍后重试"
 	case BindFailed:
 		return "绑定数据失败"
+	case EncryptError:
+		return "加密错误"
+	case VerifyError:
+		return "验证错误"
+	case JWTSignFail:
+		return "Token签名出错"
+	case InvalidToken:
+		return "非法Token"
+	case UserNotExists:
+		return "用户不存在"
+	case PasswordWrong:
+		return "密码错误"
+	case CacheError:
+		return "缓存出错"
+	case UnLoginUser:
+		return "用户尚未登录"
 	}
 	return "未知错误"
 }
