@@ -21,6 +21,8 @@ type Conf struct {
 	Mysql    Mysql    `yaml:"mysql"`
 	Server   Server   `yaml:"server"`
 	Argon2Id Argon2Id `yaml:"argon2id"`
+	JWT      JWT      `yaml:"jwt"`
+	Redis    Redis    `yaml:"redis"`
 }
 
 // Mysql Mysql配置文件类型定义
@@ -44,6 +46,18 @@ type Argon2Id struct {
 	Memory  uint32 `yaml:"memory"`
 	Threads uint8  `yaml:"threads"`
 	KeyLen  uint32 `yaml:"keyLen"`
+}
+
+// JWT JWT配置
+type JWT struct {
+	Secret string `yaml:"secret"`
+}
+
+// Redis 配置
+type Redis struct {
+	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
+	Password string `yaml:"password"`
 }
 
 // InitConfigs 读取配置文件并保存到全局变量中
