@@ -5,12 +5,13 @@
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-23
-// 修改日期: 2025-09-24
+// 修改日期: 2025-09-25
 
 package main
 
 import (
 	"backend/configs"
+	"backend/internal/cache"
 	"backend/internal/repository"
 	"backend/internal/router"
 )
@@ -28,6 +29,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	//初始化缓存
+	cache.InitCache()
 	//启动服务
 	err = router.Run()
 	//启动失败，触发panic
