@@ -11,6 +11,7 @@
 package crypto
 
 import (
+	"backend/configs"
 	"backend/internal/code"
 	"crypto/rand"
 	"crypto/subtle"
@@ -27,25 +28,21 @@ func Encrypt(password string) (string, code.Code) {
 		return "", code.EncryptError
 	}
 	version := argon2.Version
-	var times uint32 = 3
-	var memory uint32 = 64 * 1024
-	var threads uint8 = 2
-	var keyLen uint32 = 32
 	hashPassword := argon2.IDKey(
 		[]byte(password),
 		salt,
-		times,
-		memory,
-		threads,
-		keyLen,
+		configs.Config.Argon2Id.Times,
+		configs.Config.Argon2Id.Memory,
+		configs.Config.Argon2Id.Threads,
+		configs.Config.Argon2Id.KeyLen,
 	)
 	encodedHashPassword := base64.RawStdEncoding.EncodeToString(hashPassword)
 	encodedSalt := base64.RawStdEncoding.EncodeToString(salt)
 	encryptedPassword := fmt.Sprintf("$argon2id$v=%d$m=%d,t=%d,p=%d$%s$%s",
 		version,
-		memory,
-		times,
-		threads,
+		configs.Config.Argon2Id.Memory,
+		configs.Config.Argon2Id.Times,
+		configs.Config.Argon2Id.Threads,
 		encodedSalt,
 		encodedHashPassword,
 	)

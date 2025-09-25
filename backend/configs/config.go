@@ -5,7 +5,7 @@
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-23
-// 修改日期: 2025-09-24
+// 修改日期: 2025-09-25
 package configs
 
 import (
@@ -18,8 +18,9 @@ var Config Conf
 
 // Conf 全局变量类型定义
 type Conf struct {
-	Mysql  Mysql  `yaml:"mysql"`
-	Server Server `yaml:"server"`
+	Mysql    Mysql    `yaml:"mysql"`
+	Server   Server   `yaml:"server"`
+	Argon2Id Argon2Id `yaml:"argon2id"`
 }
 
 // Mysql Mysql配置文件类型定义
@@ -35,6 +36,14 @@ type Mysql struct {
 type Server struct {
 	Host string `yaml:"host"`
 	Port int    `yaml:"port"`
+}
+
+// Argon2Id argon2的参数
+type Argon2Id struct {
+	Times   uint32 `yaml:"times"`
+	Memory  uint32 `yaml:"memory"`
+	Threads uint8  `yaml:"threads"`
+	KeyLen  uint32 `yaml:"keyLen"`
 }
 
 // InitConfigs 读取配置文件并保存到全局变量中
