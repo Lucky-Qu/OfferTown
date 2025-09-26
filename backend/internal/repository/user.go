@@ -39,7 +39,32 @@ func CheckUsername(username string) (bool, error) {
 	return false, nil
 }
 
-// GetUserByUsername 通过用户名获得用户对象
+// GetUserByUserid 通过用户id获得用户对象
+func GetUserByUserid(userid string) (*model.User, error) {
+	var user model.User
+	if err := getDB().
+		Model(&model.User{}).
+		Where("id = ?", userid).
+		First(&user).
+		Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+// UpdateUser 更新用户信息
+func UpdateUser(updates map[string]interface{}, userId uint) error {
+	err := getDB().
+		Model(&model.User{}).
+		Where("id = ?", userId).
+		Updates(updates).
+		Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func GetUserByUsername(username string) (*model.User, error) {
 	var user model.User
 	if err := getDB().
