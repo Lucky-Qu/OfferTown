@@ -6,7 +6,7 @@
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-25
-// 修改日期: 2025-09-25
+// 修改日期: 2025-09-26
 
 package middleware
 
@@ -41,7 +41,7 @@ func JWTAuth(ctx *gin.Context) {
 		return
 	}
 	//检查是否已登陆
-	exist, err := cache.CheckJWTIsExists(claims.Username)
+	exist, err := cache.CheckJWTIsExists(claims.UserId)
 	if err != nil {
 		ctx.JSON(code.HttpStatusOK, gin.H{
 			"code":    code.CacheError,
