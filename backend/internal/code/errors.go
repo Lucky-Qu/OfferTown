@@ -21,6 +21,7 @@ const (
 	UserNotExists        Code = 2004
 	PasswordWrong        Code = 2005
 	UnLoginUser          Code = 2006
+	OverlongSignature    Code = 2007
 
 	DatabaseError Code = 3001
 
@@ -33,6 +34,8 @@ const (
 	InvalidToken Code = 6002
 
 	CacheError Code = 7001
+
+	ServerError Code = 8001
 )
 
 // Msg 返回代码对应的信息
@@ -66,6 +69,11 @@ func (code Code) Msg() string {
 		return "缓存出错"
 	case UnLoginUser:
 		return "用户尚未登录"
+	case ServerError:
+		return "服务器出错，请稍后再试"
+	case OverlongSignature:
+		return "个性签名过长，请修改后重试"
+
 	}
 	return "未知错误"
 }
