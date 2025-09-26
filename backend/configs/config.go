@@ -20,7 +20,7 @@ var Config Conf
 type Conf struct {
 	Mysql    Mysql    `yaml:"mysql"`
 	Server   Server   `yaml:"server"`
-	Argon2Id Argon2Id `yaml:"argon2id"`
+	Argon2Id Argon2Id `yaml:"argon2"`
 	JWT      JWT      `yaml:"jwt"`
 	Redis    Redis    `yaml:"redis"`
 }
