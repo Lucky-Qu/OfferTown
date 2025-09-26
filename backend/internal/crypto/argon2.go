@@ -6,7 +6,7 @@
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-25
-// 修改日期: 2025-09-25
+// 修改日期: 2025-09-26
 
 package crypto
 
@@ -80,7 +80,7 @@ func Verify(encryptedPassword string, password string) (bool, code.Code) {
 	}
 	result := subtle.ConstantTimeCompare(decodedHash, argon2.IDKey([]byte(password), decodedSalt, times, memory, threads, uint32(len(decodedHash))))
 	if result != 1 {
-		return false, code.VerifyError
+		return false, code.Success
 	}
 	return true, code.Success
 }
