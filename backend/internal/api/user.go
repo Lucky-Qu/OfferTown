@@ -76,8 +76,8 @@ func UserInfoHandler() gin.HandlerFunc {
 			})
 			return
 		}
-		username := claims.(*auth.Claims).Username
-		user, eCode := service.GetUserInfoByUsername(username)
+		userid := claims.(*auth.Claims).UserId
+		user, eCode := service.GetUserInfoByUserid(userid)
 		if eCode != code.Success {
 			ctx.JSON(code.HttpStatusOK, gin.H{
 				"code":    eCode,
@@ -90,5 +90,39 @@ func UserInfoHandler() gin.HandlerFunc {
 			"code": code.HttpStatusOK,
 			"data": user,
 		})
+	}
+}
+
+// UserUpdateHandler 处理前端传来的更新用户信息请求
+func UserUpdateHandler() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		//从请求中绑定获得DTO对象
+		userDTO := dto.UserUpdateDTO{}
+		if err := ctx.ShouldBindJSON(&userDTO); err != nil {
+			ctx.JSON(code.HttpStatusOK, gin.H{
+				"code":    code.BindFailed,
+				"message": code.BindFailed.Msg(),
+			})
+			return
+		}
+		//解析jwt中间件中的claims
+		claims, exists := ctx.Get("claims")
+		if !exists {
+			ctx.JSON(code.HttpStatusOK, gin.H{
+				"code":    code.UnLoginUser,
+				"message": code.UnLoginUser.Msg(),
+			})
+			return
+		}
+		//拿到userId
+		userId := claims.(*auth.Claims).UserId
+		//交给服务层进行处理
+		eCode := service.UserUpdate(&userDTO, userId)
+		//将服务层返回的结果进行显示
+		ctx.JSON(code.HttpStatusOK, gin.H{
+			"code":    eCode,
+			"message": eCode.Msg(),
+		})
+		return
 	}
 }
