@@ -5,7 +5,7 @@
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-24
-// 修改日期: 2025-09-24
+// 修改日期: 2025-09-26
 
 package repository
 
@@ -49,7 +49,13 @@ func InitDatabase() error {
 			return err
 		}
 	}
-
+	//初始化题目表结构
+	if !db.Migrator().HasTable(&model.Question{}) {
+		err = db.Migrator().CreateTable(&model.Question{})
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
