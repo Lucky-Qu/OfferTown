@@ -34,6 +34,7 @@ func newRouter() *gin.Engine {
 			loggedUser.Use(middleware.JWTAuth)
 			{
 				loggedUser.GET("/info", api.UserInfoHandler())
+				loggedUser.POST("/update", api.UserUpdateHandler())
 			}
 		}
 	}
