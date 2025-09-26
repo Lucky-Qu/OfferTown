@@ -59,3 +59,11 @@ func UsernameExistCheck(username string) bool {
 	}
 	return false
 }
+
+// SignatureCheck 检查个性签名合法性
+func SignatureCheck(signature string) bool {
+	if len(signature) > 32 {
+		return false
+	}
+	return true
+}
