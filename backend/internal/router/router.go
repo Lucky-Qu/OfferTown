@@ -22,6 +22,7 @@ func newRouter() *gin.Engine {
 	server := gin.Default()
 	router := server.Group("/")
 	{
+		router.Use(middleware.CorsMiddleware)
 		router.GET("/ping", api.PingHandler())
 
 		// 用户相关api
