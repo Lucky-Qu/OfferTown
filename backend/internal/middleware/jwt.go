@@ -6,7 +6,7 @@
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-25
-// 修改日期: 2025-09-26
+// 修改日期: 2025-09-29
 
 package middleware
 
@@ -23,7 +23,7 @@ func JWTAuth(ctx *gin.Context) {
 	token := ctx.GetHeader("Authorization")
 	token = strings.TrimPrefix(token, "Bearer ")
 	if token == "" {
-		ctx.JSON(code.HttpStatusOK, gin.H{
+		ctx.JSON(code.HttpStatusUnauthorized, gin.H{
 			"code":    code.UnLoginUser,
 			"message": code.UnLoginUser.Msg(),
 		})
@@ -33,7 +33,7 @@ func JWTAuth(ctx *gin.Context) {
 	//检查token合法性
 	claims, eCode := auth.ParseToken(token)
 	if eCode != code.Success {
-		ctx.JSON(code.HttpStatusOK, gin.H{
+		ctx.JSON(code.HttpStatusUnauthorized, gin.H{
 			"code":    eCode,
 			"message": eCode.Msg(),
 		})
@@ -51,7 +51,7 @@ func JWTAuth(ctx *gin.Context) {
 		return
 	}
 	if !exist {
-		ctx.JSON(code.HttpStatusOK, gin.H{
+		ctx.JSON(code.HttpStatusUnauthorized, gin.H{
 			"code":    code.UnLoginUser,
 			"message": code.UnLoginUser.Msg(),
 		})
