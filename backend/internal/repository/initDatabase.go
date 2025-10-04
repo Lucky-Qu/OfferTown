@@ -1,11 +1,11 @@
 // Package repository initDatabase.go
 //
 // 功能:
-// - 连接到数据库，将db存储为包内变量
+// - 连接到数据库，初始化表结构，将db存储为包内变量
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-24
-// 修改日期: 2025-09-26
+// 修改日期: 2025-10-05
 
 package repository
 
@@ -52,6 +52,27 @@ func InitDatabase() error {
 	//初始化题目表结构
 	if !db.Migrator().HasTable(&model.Question{}) {
 		err = db.Migrator().CreateTable(&model.Question{})
+		if err != nil {
+			return err
+		}
+	}
+	//初始化分类表结构
+	if !db.Migrator().HasTable(&model.Category{}) {
+		err = db.Migrator().CreateTable(&model.Category{})
+		if err != nil {
+			return err
+		}
+	}
+	//初始化分类-问题表结构
+	if !db.Migrator().HasTable(&model.CategoryQuestion{}) {
+		err = db.Migrator().CreateTable(&model.CategoryQuestion{})
+		if err != nil {
+			return err
+		}
+	}
+	//初始化用户-问题表结构
+	if !db.Migrator().HasTable(&model.UserQuestion{}) {
+		err = db.Migrator().CreateTable(&model.UserQuestion{})
 		if err != nil {
 			return err
 		}
