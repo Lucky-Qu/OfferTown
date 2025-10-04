@@ -1,11 +1,11 @@
-// Package dto user_dto.go
+// Package dto user.go
 //
 // 功能:
-// - 定义前端传来的dto对象
+// - 定义前端传来的用户dto对象
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-24
-// 修改日期: 2025-09-26
+// 修改日期: 2025-10-05
 
 package dto
 
