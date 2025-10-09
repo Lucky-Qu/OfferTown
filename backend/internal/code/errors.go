@@ -5,7 +5,7 @@
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-24
-// 修改日期: 2025-09-26
+// 修改日期: 2025-10-09
 
 package code
 
@@ -36,6 +36,8 @@ const (
 	CacheError Code = 7001
 
 	ServerError Code = 8001
+
+	PermissionDenied Code = 9001
 )
 
 // Msg 返回代码对应的信息
@@ -73,6 +75,8 @@ func (code Code) Msg() string {
 		return "服务器出错，请稍后再试"
 	case OverlongSignature:
 		return "个性签名过长，请修改后重试"
+	case PermissionDenied:
+		return "权限不足"
 
 	}
 	return "未知错误"
