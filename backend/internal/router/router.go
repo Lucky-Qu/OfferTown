@@ -7,7 +7,7 @@ package router
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-24
-// 修改日期: 2025-09-26
+// 修改日期: 2025-10-09
 
 import (
 	"backend/configs"
@@ -20,9 +20,10 @@ import (
 // newRouter 新建一个Router
 func newRouter() *gin.Engine {
 	server := gin.Default()
+	// 跨域中间件
+	server.Use(middleware.CorsMiddleware)
 	router := server.Group("/")
 	{
-		router.Use(middleware.CorsMiddleware)
 		router.GET("/ping", api.PingHandler())
 
 		// 用户相关api
@@ -36,6 +37,20 @@ func newRouter() *gin.Engine {
 			{
 				loggedUser.GET("/info", api.UserInfoHandler())
 				loggedUser.POST("/update", api.UserUpdateHandler())
+			}
+		}
+		//管理员相关api
+		admin := router.Group("/admin")
+		{
+			admin.Use(middleware.JWTAuth)
+			admin.Use(middleware.AdminPermissionMiddleware)
+			{
+				admin.POST("/add-question", api.AddNewQuestionHandler())
+				admin.POST("/update-question", api.UpdateQuestionHandler())
+				admin.DELETE("/del-question", api.DeleteQuestionHandler())
+				admin.POST("/add-category", api.AddNewCategoryHandler())
+				admin.POST("/update-category", api.UpdateCategoryHandler())
+				admin.DELETE("/del-category", api.DeleteCategoryHandler())
 			}
 		}
 	}
