@@ -22,7 +22,7 @@ import (
 // CreateCategory 新建分类
 func CreateCategory(tx *gorm.DB, category *model.Category) error {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	return tx.Create(category).Error
 }
@@ -30,7 +30,7 @@ func CreateCategory(tx *gorm.DB, category *model.Category) error {
 // UpdateCategoryById 通过分类ID更新分类
 func UpdateCategoryById(tx *gorm.DB, updates map[string]interface{}, categoryId uint) error {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	return tx.Model(&model.Category{}).Where("id = ?", categoryId).Updates(updates).Error
 }
@@ -38,7 +38,7 @@ func UpdateCategoryById(tx *gorm.DB, updates map[string]interface{}, categoryId 
 // DeleteCategoryById 通过分类ID删除分类
 func DeleteCategoryById(tx *gorm.DB, id uint) error {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	return tx.Delete(&model.Category{}, id).Error
 }
@@ -46,7 +46,7 @@ func DeleteCategoryById(tx *gorm.DB, id uint) error {
 // GetCategoryByName 通过分类名获取分类
 func GetCategoryByName(tx *gorm.DB, name string) (*model.Category, error) {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	var category model.Category
 	if err := tx.Where("name = ?", name).First(&category).Error; err != nil {
@@ -58,7 +58,7 @@ func GetCategoryByName(tx *gorm.DB, name string) (*model.Category, error) {
 // GetCategoryById 通过分类ID获取分类
 func GetCategoryById(tx *gorm.DB, id uint) (*model.Category, error) {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	var category model.Category
 	if err := tx.Where("id = ?", id).First(&category).Error; err != nil {
@@ -70,7 +70,7 @@ func GetCategoryById(tx *gorm.DB, id uint) (*model.Category, error) {
 // GetCategories 根据偏移和条数获取分类
 func GetCategories(tx *gorm.DB, offset int, limit int) ([]model.Category, error) {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	var categories []model.Category
 	// 按照创建时间倒序排序

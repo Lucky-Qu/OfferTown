@@ -22,7 +22,7 @@ import (
 // AddNewQuestion 新增题目
 func AddNewQuestion(tx *gorm.DB, question *model.Question) error {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	return tx.Create(question).Error
 }
@@ -30,7 +30,7 @@ func AddNewQuestion(tx *gorm.DB, question *model.Question) error {
 // DeleteQuestionById 根据题目ID删除题目
 func DeleteQuestionById(tx *gorm.DB, questionId uint) error {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	return tx.Delete(&model.Question{}, questionId).Error
 }
@@ -38,7 +38,7 @@ func DeleteQuestionById(tx *gorm.DB, questionId uint) error {
 // UpdateQuestion 根据题目ID更新题目
 func UpdateQuestion(tx *gorm.DB, updates map[string]interface{}, questionId uint) error {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	return tx.Model(&model.Question{}).Where("id = ?", questionId).Updates(updates).Error
 }
@@ -46,7 +46,7 @@ func UpdateQuestion(tx *gorm.DB, updates map[string]interface{}, questionId uint
 // GetQuestionById 根据题目ID获取题目
 func GetQuestionById(tx *gorm.DB, questionId uint) (*model.Question, error) {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	var question model.Question
 	if err := tx.Where("id = ?", questionId).First(&question).Error; err != nil {
@@ -58,7 +58,7 @@ func GetQuestionById(tx *gorm.DB, questionId uint) (*model.Question, error) {
 // GetQuestions 根据偏移量和获取数量批量获取题目
 func GetQuestions(tx *gorm.DB, offset, limit int) ([]model.Question, error) {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	var questions []model.Question
 	if err := tx.Order("created_at desc").Offset(offset).Limit(limit).Find(&questions).Error; err != nil {
@@ -70,7 +70,7 @@ func GetQuestions(tx *gorm.DB, offset, limit int) ([]model.Question, error) {
 // GetQuestionByName 通过题目名获取题目
 func GetQuestionByName(tx *gorm.DB, questionName string) (*model.Question, error) {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	var question model.Question
 	if err := tx.Where("title = ?", questionName).First(&question).Error; err != nil {
@@ -82,7 +82,7 @@ func GetQuestionByName(tx *gorm.DB, questionName string) (*model.Question, error
 // IsQuestionExistByName 通过题目名检查题目名是否存在
 func IsQuestionExistByName(tx *gorm.DB, questionName string) (bool, error) {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	var count int64
 	if err := tx.Model(&model.Question{}).Where("title = ?", questionName).Count(&count).Error; err != nil {

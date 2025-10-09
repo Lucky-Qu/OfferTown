@@ -21,7 +21,7 @@ import (
 // RegisterUser 注册用户
 func RegisterUser(tx *gorm.DB, user *model.User) error {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	return tx.Create(user).Error
 }
@@ -29,7 +29,7 @@ func RegisterUser(tx *gorm.DB, user *model.User) error {
 // CheckUsername 检查用户名是否存在
 func CheckUsername(tx *gorm.DB, username string) (bool, error) {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	var count int64
 	if err := tx.Model(&model.User{}).Where("username = ?", username).Count(&count).Error; err != nil {
@@ -42,7 +42,7 @@ func CheckUsername(tx *gorm.DB, username string) (bool, error) {
 // GetUserByUserId 通过用户id获得用户对象
 func GetUserByUserId(tx *gorm.DB, userid uint) (*model.User, error) {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	var user model.User
 	if err := tx.Where("id = ?", userid).First(&user).Error; err != nil {
@@ -54,7 +54,7 @@ func GetUserByUserId(tx *gorm.DB, userid uint) (*model.User, error) {
 // UpdateUser 更新用户信息
 func UpdateUser(tx *gorm.DB, updates map[string]interface{}, userId uint) error {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	return tx.Model(&model.User{}).Where("id = ?", userId).Updates(updates).Error
 }
@@ -62,7 +62,7 @@ func UpdateUser(tx *gorm.DB, updates map[string]interface{}, userId uint) error 
 // GetUserByUsername 根据用户名查询用户信息
 func GetUserByUsername(tx *gorm.DB, username string) (*model.User, error) {
 	if tx == nil {
-		tx = getDB()
+		tx = GetDB()
 	}
 	var user model.User
 	if err := tx.Where("username = ?", username).First(&user).Error; err != nil {
