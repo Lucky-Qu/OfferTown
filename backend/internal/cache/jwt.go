@@ -6,7 +6,7 @@
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-25
-// 修改日期: 2025-09-26
+// 修改日期: 2025-10-09
 package cache
 
 import (
@@ -26,7 +26,7 @@ func SetJWT(token string) code.Code {
 	}
 	getRDB().Set(
 		ctx,
-		fmt.Sprintf("jwt:%s", claims.UserId),
+		fmt.Sprintf("jwt:%d", claims.UserId),
 		token,
 		claims.ExpiresAt.Time.Sub(time.Now()),
 	)
@@ -34,8 +34,8 @@ func SetJWT(token string) code.Code {
 }
 
 // CheckJWTIsExists 检查用户Id对应的Token是否存在
-func CheckJWTIsExists(userid string) (bool, error) {
-	result, err := getRDB().Exists(context.Background(), fmt.Sprintf("jwt:%s", userid)).Result()
+func CheckJWTIsExists(userId uint) (bool, error) {
+	result, err := getRDB().Exists(context.Background(), fmt.Sprintf("jwt:%d", userId)).Result()
 	if err != nil {
 		return false, err
 	}
@@ -43,16 +43,16 @@ func CheckJWTIsExists(userid string) (bool, error) {
 }
 
 // GetJWTByUserid 根据用户名获得对应的Token
-func GetJWTByUserid(userid string) (string, error) {
-	result, err := getRDB().Get(context.Background(), fmt.Sprintf("jwt:%s", userid)).Result()
+func GetJWTByUserid(userId uint) (string, error) {
+	result, err := getRDB().Get(context.Background(), fmt.Sprintf("jwt:%d", userId)).Result()
 	if err != nil {
 		return "", err
 	}
 	return result, nil
 }
 
-func DeleteTokenByUserid(userid string) error {
-	_, err := getRDB().Del(context.Background(), fmt.Sprintf("jwt:%s", userid)).Result()
+func DeleteTokenByUserid(userId uint) error {
+	_, err := getRDB().Del(context.Background(), fmt.Sprintf("jwt:%d", userId)).Result()
 	if err != nil {
 		return err
 	}
