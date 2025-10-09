@@ -13,9 +13,11 @@ package validator
 
 import (
 	"backend/internal/repository"
+	"gorm.io/gorm"
 	"unicode"
 )
 
+// UsernameCheck 检查用户名合法性
 func UsernameCheck(username string) bool {
 	//用户名长度不小于2，不大于20(中文算作两个字符)
 	if len(username) < 2 || len(username) > 20 {
@@ -30,6 +32,7 @@ func UsernameCheck(username string) bool {
 	return true
 }
 
+// PasswordCheck 检查密码合法性
 func PasswordCheck(password string) bool {
 	//密码必须大于等于八位,小于等于二十位
 	if !(len(password) >= 8 && len(password) <= 20) {
@@ -47,9 +50,10 @@ func PasswordCheck(password string) bool {
 	return true
 }
 
-func UsernameExistCheck(username string) bool {
+// UsernameExistCheck 检查用户名是否存在
+func UsernameExistCheck(tx *gorm.DB, username string) bool {
 	//用户名不能重名
-	exist, err := repository.CheckUsername(username)
+	exist, err := repository.CheckUsername(tx, username)
 	if err != nil {
 		//TODO 处理数据库错误
 		return false
