@@ -19,7 +19,6 @@ import (
 	"backend/internal/model"
 	"backend/internal/repository"
 	"backend/internal/validator"
-	"strconv"
 )
 
 // RegisterUser 注册用户功能
@@ -28,7 +27,7 @@ func RegisterUser(userCreateDTO *dto.UserCreateDTO) code.Code {
 	if ok := validator.UsernameCheck(userCreateDTO.Username); !ok {
 		return code.InvalidUsername
 	}
-	if ok := validator.UsernameExistCheck(userCreateDTO.Username); ok {
+	if ok := validator.UsernameExistCheck(nil, userCreateDTO.Username); ok {
 		return code.UsernameAlreadyExist
 	}
 	if ok := validator.PasswordCheck(userCreateDTO.Password); !ok {
@@ -45,8 +44,9 @@ func RegisterUser(userCreateDTO *dto.UserCreateDTO) code.Code {
 		EncryptedPassword: encryptedPassword,
 		Signature:         "",
 		AvatarPath:        "./static/images/defaultAvatar.jpg",
+		Role:              "user",
 	}
-	err := repository.RegisterUser(&user)
+	err := repository.RegisterUser(nil, &user)
 	if err != nil {
 		return code.DatabaseError
 	}
@@ -56,14 +56,14 @@ func RegisterUser(userCreateDTO *dto.UserCreateDTO) code.Code {
 // UserLogin 用户登录功能
 func UserLogin(userDTO *dto.UserLoginDTO) (string, code.Code) {
 	// 判断用户名是否存在
-	if ok, err := repository.CheckUsername(userDTO.Username); !ok {
+	if ok, err := repository.CheckUsername(nil, userDTO.Username); !ok {
 		if err != nil {
 			return "", code.DatabaseError
 		}
 		return "", code.UserNotExists
 	}
 
-	user, err := repository.GetUserByUsername(userDTO.Username)
+	user, err := repository.GetUserByUsername(nil, userDTO.Username)
 	if err != nil {
 		return "", code.DatabaseError
 	}
@@ -77,19 +77,19 @@ func UserLogin(userDTO *dto.UserLoginDTO) (string, code.Code) {
 		return "", code.PasswordWrong
 	}
 	// 检查是否已在登陆状态，避免重复生成Token
-	check, err := cache.CheckJWTIsExists(strconv.Itoa(int(user.ID)))
+	check, err := cache.CheckJWTIsExists(user.ID)
 	if err != nil {
 		return "", code.CacheError
 	}
 	if check {
-		token, err := cache.GetJWTByUserid(strconv.Itoa(int(user.ID)))
+		token, err := cache.GetJWTByUserid(user.ID)
 		if err != nil {
 			return "", code.CacheError
 		}
 		return token, code.Success
 	}
 
-	token, eCode := auth.GetToken(int(user.ID))
+	token, eCode := auth.GetToken(user.ID)
 	if eCode != code.Success {
 		return "", eCode
 	}
@@ -99,8 +99,8 @@ func UserLogin(userDTO *dto.UserLoginDTO) (string, code.Code) {
 }
 
 // GetUserInfoByUserid 通过用户id获得用户DTO对象
-func GetUserInfoByUserid(userid string) (*dto.UserInfoDTO, code.Code) {
-	user, err := repository.GetUserByUserid(userid)
+func GetUserInfoByUserid(userid uint) (*dto.UserInfoDTO, code.Code) {
+	user, err := repository.GetUserByUserId(nil, userid)
 	if err != nil {
 		return nil, code.DatabaseError
 	}
@@ -113,15 +113,9 @@ func GetUserInfoByUserid(userid string) (*dto.UserInfoDTO, code.Code) {
 }
 
 // UserUpdate 更新用户信息
-func UserUpdate(userDTO *dto.UserUpdateDTO, userIdStr string) code.Code {
-	//处理传入的userId
-	userIdInt, err := strconv.Atoi(userIdStr)
-	if err != nil {
-		return code.ServerError
-	}
-	userId := uint(userIdInt)
+func UserUpdate(userDTO *dto.UserUpdateDTO, userId uint) code.Code {
 	//取出要修改的用户信息
-	user, err := repository.GetUserByUserid(userIdStr)
+	user, err := repository.GetUserByUserId(nil, userId)
 	if err != nil {
 		return code.DatabaseError
 	}
@@ -133,7 +127,7 @@ func UserUpdate(userDTO *dto.UserUpdateDTO, userIdStr string) code.Code {
 		if !validator.UsernameCheck(userDTO.Username) {
 			return code.InvalidUsername
 		}
-		if validator.UsernameExistCheck(userDTO.Username) {
+		if validator.UsernameExistCheck(nil, userDTO.Username) {
 			return code.UsernameAlreadyExist
 		}
 		updates["username"] = userDTO.Username
@@ -155,7 +149,7 @@ func UserUpdate(userDTO *dto.UserUpdateDTO, userIdStr string) code.Code {
 			}
 			updates["encrypted_password"] = encryptedPassword
 			//如果修改密码，需要重新登录
-			err := cache.DeleteTokenByUserid(strconv.Itoa(int(user.ID)))
+			err := cache.DeleteTokenByUserid(user.ID)
 			if err != nil {
 				return code.CacheError
 			}
@@ -173,7 +167,7 @@ func UserUpdate(userDTO *dto.UserUpdateDTO, userIdStr string) code.Code {
 		return code.Success
 	}
 	//传入数据层操作
-	err = repository.UpdateUser(updates, uint(userId))
+	err = repository.UpdateUser(nil, updates, userId)
 	if err != nil {
 		return code.DatabaseError
 	}
