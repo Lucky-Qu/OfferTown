@@ -80,7 +80,12 @@ func InitDatabase() error {
 	return nil
 }
 
-// 对包内提供函数操作db
+// getDB 对包内提供函数操作db
 func getDB() *gorm.DB {
 	return db
+}
+
+// NewTransaction 对服务层提供事务
+func NewTransaction() *gorm.DB {
+	return getDB().Begin()
 }
