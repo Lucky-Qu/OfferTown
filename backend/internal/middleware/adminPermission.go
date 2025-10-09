@@ -5,7 +5,7 @@
 //
 // 作者: LuckyQu
 // 创建日期: 2025-10-05
-// 修改日期: 2025-10-05
+// 修改日期: 2025-10-09
 package middleware
 
 import (
@@ -29,7 +29,7 @@ func AdminPermissionMiddleware(ctx *gin.Context) {
 	}
 	// 从claims中拿取登录用户的ID，通过ID拿取用户信息
 	userId := claims.(*auth.Claims).UserId
-	user, err := repository.GetUserByUserId(userId)
+	user, err := repository.GetUserByUserId(nil, userId)
 	if err != nil {
 		ctx.JSON(code.HttpStatusOK, gin.H{
 			"code":    code.DatabaseError,
