@@ -6,7 +6,8 @@
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-25
-// 修改日期: 2025-09-26
+// 修改日期: 2025-10-05
+
 package auth
 
 import (
@@ -14,19 +15,17 @@ import (
 	"backend/internal/code"
 	"fmt"
 	"github.com/golang-jwt/jwt/v5"
-	"strconv"
 	"time"
 )
 
 // Claims 自定义的Claims结构体
 type Claims struct {
 	jwt.RegisteredClaims
-	UserId string `json:"userid"`
+	UserId uint `json:"userid"`
 }
 
 // GetToken 签发token
-func GetToken(userId int) (string, code.Code) {
-	id := strconv.Itoa(userId)
+func GetToken(userId uint) (string, code.Code) {
 	unSignedToken := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		Claims{
 			jwt.RegisteredClaims{
@@ -38,7 +37,7 @@ func GetToken(userId int) (string, code.Code) {
 				IssuedAt:  jwt.NewNumericDate(time.Now()),
 				ID:        fmt.Sprintf("token-%d", time.Now().Unix()),
 			},
-			id,
+			userId,
 		})
 	secret := []byte(configs.Config.JWT.Secret)
 	signedToken, err := unSignedToken.SignedString(secret)
