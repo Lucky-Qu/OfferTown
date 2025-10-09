@@ -15,13 +15,18 @@ type Code int
 const (
 	Success Code = 1001
 
-	InvalidUsername      Code = 2001
-	UsernameAlreadyExist Code = 2002
-	InvalidPassword      Code = 2003
-	UserNotExists        Code = 2004
-	PasswordWrong        Code = 2005
-	UnLoginUser          Code = 2006
-	OverlongSignature    Code = 2007
+	InvalidUsername          Code = 2001
+	UsernameAlreadyExist     Code = 2002
+	InvalidPassword          Code = 2003
+	UserNotExists            Code = 2004
+	PasswordWrong            Code = 2005
+	UnLoginUser              Code = 2006
+	OverlongSignature        Code = 2007
+	InvalidCategoryName      Code = 2008
+	CategoryNameAlreadyExist Code = 2009
+	CategoryNotExist         Code = 2010
+	InvalidQuestion          Code = 2011
+	QuestionNotExists        Code = 2012
 
 	DatabaseError Code = 3001
 
@@ -77,7 +82,16 @@ func (code Code) Msg() string {
 		return "个性签名过长，请修改后重试"
 	case PermissionDenied:
 		return "权限不足"
-
+	case InvalidCategoryName:
+		return "分类名不符合规范，请修改后重试"
+	case CategoryNameAlreadyExist:
+		return "分类名已存在，请修改后重试"
+	case CategoryNotExist:
+		return "分类名不存在，请检查后再试"
+	case InvalidQuestion:
+		return "问题信息不合法，请修改后上传"
+	case QuestionNotExists:
+		return "题目不存在"
 	}
 	return "未知错误"
 }
