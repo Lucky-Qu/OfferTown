@@ -52,6 +52,9 @@ func PasswordCheck(password string) bool {
 
 // UsernameExistCheck 检查用户名是否存在
 func UsernameExistCheck(tx *gorm.DB, username string) bool {
+	if tx == nil {
+		tx = repository.GetDB()
+	}
 	//用户名不能重名
 	exist, err := repository.CheckUsername(tx, username)
 	if err != nil {
