@@ -16,13 +16,13 @@ import (
 )
 
 // IsCategoryNameValid 检查分类名是否合法
-func IsCategoryNameValid(categoryName string) (bool, code.Code) {
+func IsCategoryNameValid(tx *gorm.DB, categoryName string) (bool, code.Code) {
 	// 长度不为0，不大于32位
 	if l := len(categoryName); l == 0 || l > 32 {
 		return false, code.InvalidCategoryName
 	}
 	// 不能重名
-	_, err := repository.GetCategoryByName(categoryName)
+	_, err := repository.GetCategoryByName(tx, categoryName)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return true, code.Success
