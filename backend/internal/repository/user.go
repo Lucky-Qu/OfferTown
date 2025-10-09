@@ -13,17 +13,26 @@
 
 package repository
 
-import "backend/internal/model"
+import (
+	"backend/internal/model"
+	"gorm.io/gorm"
+)
 
 // RegisterUser 注册用户
-func RegisterUser(user *model.User) error {
-	return getDB().Create(user).Error
+func RegisterUser(tx *gorm.DB, user *model.User) error {
+	if tx == nil {
+		tx = getDB()
+	}
+	return tx.Create(user).Error
 }
 
 // CheckUsername 检查用户名是否存在
-func CheckUsername(username string) (bool, error) {
+func CheckUsername(tx *gorm.DB, username string) (bool, error) {
+	if tx == nil {
+		tx = getDB()
+	}
 	var count int64
-	if err := getDB().Model(&model.User{}).Where("username = ?", username).Count(&count).Error; err != nil {
+	if err := tx.Model(&model.User{}).Where("username = ?", username).Count(&count).Error; err != nil {
 		return false, err
 	}
 	//通过计数判断是否存在
@@ -31,23 +40,32 @@ func CheckUsername(username string) (bool, error) {
 }
 
 // GetUserByUserId 通过用户id获得用户对象
-func GetUserByUserId(userid uint) (*model.User, error) {
+func GetUserByUserId(tx *gorm.DB, userid uint) (*model.User, error) {
+	if tx == nil {
+		tx = getDB()
+	}
 	var user model.User
-	if err := getDB().Where("id = ?", userid).First(&user).Error; err != nil {
+	if err := tx.Where("id = ?", userid).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
 }
 
 // UpdateUser 更新用户信息
-func UpdateUser(updates map[string]interface{}, userId uint) error {
-	return getDB().Model(&model.User{}).Where("id = ?", userId).Updates(updates).Error
+func UpdateUser(tx *gorm.DB, updates map[string]interface{}, userId uint) error {
+	if tx == nil {
+		tx = getDB()
+	}
+	return tx.Model(&model.User{}).Where("id = ?", userId).Updates(updates).Error
 }
 
 // GetUserByUsername 根据用户名查询用户信息
-func GetUserByUsername(username string) (*model.User, error) {
+func GetUserByUsername(tx *gorm.DB, username string) (*model.User, error) {
+	if tx == nil {
+		tx = getDB()
+	}
 	var user model.User
-	if err := getDB().Where("username = ?", username).First(&user).Error; err != nil {
+	if err := tx.Where("username = ?", username).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
