@@ -10,10 +10,11 @@
 // - 通过题目名检查题目是否存在
 // - 获取全部题目
 // - 获取全部题目数量
+// - 根据Id批量获取题目数量
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-26
-// 修改日期: 2025-10-05
+// 修改日期: 2025-10-10
 package repository
 
 import (
@@ -115,4 +116,16 @@ func GetQuestionCount(tx *gorm.DB) (int64, error) {
 		return 0, err
 	}
 	return count, nil
+}
+
+// GetQuestionsByIds 批量根据Id获取题目
+func GetQuestionsByIds(tx *gorm.DB, questionIds []uint) ([]model.Question, error) {
+	if tx == nil {
+		tx = GetDB()
+	}
+	var questions []model.Question
+	if err := tx.Where("id IN (?)", questionIds).Find(&questions).Error; err != nil {
+		return nil, err
+	}
+	return questions, nil
 }

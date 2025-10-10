@@ -18,7 +18,7 @@ type GetCategoryQuestionRequestDTO struct {
 }
 
 type GetCategoryQuestionResponseDTO struct {
-	Count      int              `json:"count"`
+	TotalCount int              `json:"total_count"`
 	Categories []model.Category `json:"categories"`
 	Questions  []model.Question `json:"questions"`
 }

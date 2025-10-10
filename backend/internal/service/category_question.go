@@ -35,7 +35,7 @@ func GetCategoryQuestion(requestDTO *dto.GetCategoryQuestionRequestDTO) (*dto.Ge
 			// 题目没有分类
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return &dto.GetCategoryQuestionResponseDTO{
-					Count:      0,
+					TotalCount: 0,
 					Categories: []model.Category{},
 				}, code.Success
 			}
@@ -52,7 +52,7 @@ func GetCategoryQuestion(requestDTO *dto.GetCategoryQuestionRequestDTO) (*dto.Ge
 			return nil, code.DatabaseError
 		}
 		return &dto.GetCategoryQuestionResponseDTO{
-			Count:      len(categories),
+			TotalCount: len(categories),
 			Categories: categories,
 		}, code.Success
 
@@ -74,7 +74,7 @@ func GetCategoryQuestion(requestDTO *dto.GetCategoryQuestionRequestDTO) (*dto.Ge
 				return nil, code.DatabaseError
 			}
 			return &dto.GetCategoryQuestionResponseDTO{
-				Count: len(categoryQuestionRelations),
+				TotalCount: len(categoryQuestionRelations),
 			}, code.Success
 		}
 		if requestDTO.Page == 0 {
@@ -96,8 +96,8 @@ func GetCategoryQuestion(requestDTO *dto.GetCategoryQuestionRequestDTO) (*dto.Ge
 			}
 			// 返回结果
 			return &dto.GetCategoryQuestionResponseDTO{
-				Count:     len(questions),
-				Questions: questions,
+				TotalCount: len(questions),
+				Questions:  questions,
 			}, code.Success
 		}
 		// 获取指定数据
@@ -120,8 +120,8 @@ func GetCategoryQuestion(requestDTO *dto.GetCategoryQuestionRequestDTO) (*dto.Ge
 			return nil, code.DatabaseError
 		}
 		return &dto.GetCategoryQuestionResponseDTO{
-			Count:     len(questions),
-			Questions: questions,
+			TotalCount: len(questions),
+			Questions:  questions,
 		}, code.Success
 	}
 	// 未知target
