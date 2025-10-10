@@ -163,7 +163,7 @@ func DeleteCategory(categoryName string) code.Code {
 	if err != nil {
 		tx.Rollback()
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return code.CategoryNotExist
+			return code.CategoryNotExists
 		}
 		return code.DatabaseError
 	}

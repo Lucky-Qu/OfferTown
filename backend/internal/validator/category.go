@@ -5,7 +5,7 @@
 //
 // 作者: LuckyQu
 // 创建日期: 2025-10-09
-// 修改日期: 2025-10-09
+// 修改日期: 2025-10-10
 package validator
 
 import (
@@ -29,5 +29,5 @@ func IsCategoryNameValid(tx *gorm.DB, categoryName string) (bool, code.Code) {
 		}
 		return false, code.DatabaseError
 	}
-	return false, code.CategoryNameAlreadyExist
+	return false, code.CategoryNameAlreadyExists
 }

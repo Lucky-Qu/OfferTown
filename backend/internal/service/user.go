@@ -28,7 +28,7 @@ func RegisterUser(userCreateDTO *dto.UserCreateDTO) code.Code {
 		return code.InvalidUsername
 	}
 	if ok := validator.UsernameExistCheck(nil, userCreateDTO.Username); ok {
-		return code.UsernameAlreadyExist
+		return code.UsernameAlreadyExists
 	}
 	if ok := validator.PasswordCheck(userCreateDTO.Password); !ok {
 		return code.InvalidPassword
@@ -128,7 +128,7 @@ func UserUpdate(userDTO *dto.UserUpdateDTO, userId uint) code.Code {
 			return code.InvalidUsername
 		}
 		if validator.UsernameExistCheck(nil, userDTO.Username) {
-			return code.UsernameAlreadyExist
+			return code.UsernameAlreadyExists
 		}
 		updates["username"] = userDTO.Username
 	}

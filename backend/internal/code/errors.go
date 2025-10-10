@@ -15,19 +15,20 @@ type Code int
 const (
 	Success Code = 1001
 
-	InvalidUsername          Code = 2001
-	UsernameAlreadyExist     Code = 2002
-	InvalidPassword          Code = 2003
-	UserNotExists            Code = 2004
-	PasswordWrong            Code = 2005
-	UnLoginUser              Code = 2006
-	OverlongSignature        Code = 2007
-	InvalidCategoryName      Code = 2008
-	CategoryNameAlreadyExist Code = 2009
-	CategoryNotExist         Code = 2010
-	InvalidQuestion          Code = 2011
-	QuestionNotExists        Code = 2012
-	QuestionAlreadyExists    Code = 2013
+	InvalidUsername           Code = 2001
+	UsernameAlreadyExists     Code = 2002
+	InvalidPassword           Code = 2003
+	UserNotExists             Code = 2004
+	PasswordWrong             Code = 2005
+	UnLoginUser               Code = 2006
+	OverlongSignature         Code = 2007
+	InvalidCategoryName       Code = 2008
+	CategoryNameAlreadyExists Code = 2009
+	CategoryNotExists         Code = 2010
+	InvalidQuestion           Code = 2011
+	QuestionNotExists         Code = 2012
+	QuestionAlreadyExists     Code = 2013
+	UnknownTarget             Code = 2014
 
 	DatabaseError Code = 3001
 
@@ -53,7 +54,7 @@ func (code Code) Msg() string {
 		return "请求成功"
 	case InvalidUsername:
 		return "用户名不符合规范，请修改后重试！"
-	case UsernameAlreadyExist:
+	case UsernameAlreadyExists:
 		return "用户名已存在，请修改后重试"
 	case InvalidPassword:
 		return "密码不符合规范，请修改后重试！"
@@ -85,9 +86,9 @@ func (code Code) Msg() string {
 		return "权限不足"
 	case InvalidCategoryName:
 		return "分类名不符合规范，请修改后重试"
-	case CategoryNameAlreadyExist:
+	case CategoryNameAlreadyExists:
 		return "分类名已存在，请修改后重试"
-	case CategoryNotExist:
+	case CategoryNotExists:
 		return "分类名不存在，请检查后再试"
 	case InvalidQuestion:
 		return "问题信息不合法，请修改后上传"
@@ -95,6 +96,8 @@ func (code Code) Msg() string {
 		return "题目不存在"
 	case QuestionAlreadyExists:
 		return "题目名已存在"
+	case UnknownTarget:
+		return "未知Target"
 	}
 	return "未知错误"
 }
