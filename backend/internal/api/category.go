@@ -119,7 +119,7 @@ func GetCategoryListHandler() gin.HandlerFunc {
 			})
 			return
 		}
-		categoryNames, eCode := service.GetCategoryList(&categoryDTO)
+		categories, eCode := service.GetCategoryList(&categoryDTO)
 		if eCode != code.Success {
 			ctx.JSON(code.HttpStatusOK, gin.H{
 				"code":    eCode,
@@ -129,7 +129,7 @@ func GetCategoryListHandler() gin.HandlerFunc {
 		ctx.JSON(code.HttpStatusOK, gin.H{
 			"code":    code.Success,
 			"message": code.Success.Msg(),
-			"data":    categoryNames,
+			"data":    categories,
 		})
 	}
 }
