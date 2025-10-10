@@ -18,8 +18,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// GetCategoriesByQuestionHandler 获取一道题的所有分类或一个分类的指定题目
-func GetCategoriesByQuestionHandler() gin.HandlerFunc {
+// GetCategoryQuestionHandler 获取一道题的所有分类或一个分类的指定题目
+func GetCategoryQuestionHandler() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		requestDTO := dto.GetCategoryQuestionRequestDTO{}
 		if err := ctx.ShouldBindJSON(&requestDTO); err != nil {

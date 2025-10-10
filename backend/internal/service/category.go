@@ -186,7 +186,7 @@ func DeleteCategory(categoryName string) code.Code {
 }
 
 // GetCategoryList 获取分类信息
-func GetCategoryList(categoryDTO *dto.GetCategoryDTORequest) (*dto.GetCategoryDTOResponse, code.Code) {
+func GetCategoryList(categoryDTO *dto.GetCategoryRequestDTO) (*dto.GetCategoryResponseDTO, code.Code) {
 	// 获取分类总数
 	count, err := repository.GetCategoryNum(nil)
 	if err != nil {
@@ -194,7 +194,7 @@ func GetCategoryList(categoryDTO *dto.GetCategoryDTORequest) (*dto.GetCategoryDT
 	}
 	// 当DTO中页容纳数为0，只返回总数
 	if categoryDTO.PageSize == 0 {
-		return &dto.GetCategoryDTOResponse{
+		return &dto.GetCategoryResponseDTO{
 			Categories: nil,
 			TotalCount: count,
 		}, code.Success
@@ -205,7 +205,7 @@ func GetCategoryList(categoryDTO *dto.GetCategoryDTORequest) (*dto.GetCategoryDT
 		if err != nil {
 			return nil, code.DatabaseError
 		}
-		return &dto.GetCategoryDTOResponse{
+		return &dto.GetCategoryResponseDTO{
 			Categories: categories,
 			TotalCount: count,
 		}, code.Success
@@ -217,7 +217,7 @@ func GetCategoryList(categoryDTO *dto.GetCategoryDTORequest) (*dto.GetCategoryDT
 	if err != nil {
 		return nil, code.DatabaseError
 	}
-	return &dto.GetCategoryDTOResponse{
+	return &dto.GetCategoryResponseDTO{
 		Categories: categories,
 		TotalCount: count,
 	}, code.Success

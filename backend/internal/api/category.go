@@ -110,7 +110,7 @@ func DeleteCategoryHandler() gin.HandlerFunc {
 // GetCategoryListHandler 根据数量获得分类列表
 func GetCategoryListHandler() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		categoryDTO := dto.GetCategoryDTORequest{}
+		categoryDTO := dto.GetCategoryRequestDTO{}
 		err := ctx.ShouldBindJSON(&categoryDTO)
 		if err != nil {
 			ctx.JSON(code.HttpStatusOK, gin.H{

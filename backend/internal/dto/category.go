@@ -29,14 +29,14 @@ type DeleteCategoryDTO struct {
 	Name string `json:"name"`
 }
 
-// GetCategoryDTORequest 获取分类的请求DTO模型
-type GetCategoryDTORequest struct {
+// GetCategoryRequestDTO 获取分类的请求DTO模型
+type GetCategoryRequestDTO struct {
 	Page     int `json:"page"`
 	PageSize int `json:"page_size"`
 }
 
-// GetCategoryDTOResponse 获取分类的响应DTO模型
-type GetCategoryDTOResponse struct {
+// GetCategoryResponseDTO 获取分类的响应DTO模型
+type GetCategoryResponseDTO struct {
 	Categories []model.Category `json:"categories"`
 	TotalCount int64            `json:"total_count"`
 }
