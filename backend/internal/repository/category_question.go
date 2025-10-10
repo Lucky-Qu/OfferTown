@@ -7,10 +7,11 @@
 // - 根据ID清除一个分类的全部题目
 // - 根据ID获取一个题目的全部分类
 // - 根据ID获取一个分类的全部题目
+// - 根据ID分页获取一个分类的全部题目
 //
 // 作者: LuckyQu
 // 创建日期: 2025-10-05
-// 修改日期: 2025-10-09
+// 修改日期: 2025-10-10
 package repository
 
 import (
@@ -72,6 +73,18 @@ func GetQuestionsByCategoryId(tx *gorm.DB, categoryId uint) ([]model.CategoryQue
 	}
 	var result []model.CategoryQuestion
 	if err := tx.Order("created_at desc").Find(&result, "category_id = ?", categoryId).Error; err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// GetQuestionByCategoryIdWithOffsetAndLimit 根据ID分页获取一个分类的全部题目
+func GetQuestionByCategoryIdWithOffsetAndLimit(tx *gorm.DB, categoryId uint, offset int, limit int) ([]model.CategoryQuestion, error) {
+	if tx == nil {
+		tx = GetDB()
+	}
+	var result []model.CategoryQuestion
+	if err := tx.Order("created_at desc").Offset(offset).Limit(limit).Find(&result, "category_id = ?", categoryId).Error; err != nil {
 		return nil, err
 	}
 	return result, nil
