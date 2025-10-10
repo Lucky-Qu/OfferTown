@@ -111,7 +111,7 @@ func DeleteCategoryHandler() gin.HandlerFunc {
 func GetCategoryListHandler() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		categoryDTO := dto.GetCategoryDTORequest{}
-		err := ctx.ShouldBindQuery(&categoryDTO)
+		err := ctx.ShouldBindJSON(&categoryDTO)
 		if err != nil {
 			ctx.JSON(code.HttpStatusOK, gin.H{
 				"code":    code.BindFailed,

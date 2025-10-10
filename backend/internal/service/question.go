@@ -84,6 +84,9 @@ func AddNewQuestion(questionDTO *dto.CreateQuestionDTO) code.Code {
 			category, err := repository.GetCategoryByName(tx, categoryName)
 			if err != nil {
 				tx.Rollback()
+				if errors.Is(err, gorm.ErrRecordNotFound) {
+					return code.CategoryNotExist
+				}
 				return code.DatabaseError
 			}
 			err = repository.AddQuestionToCategoryById(tx, addedQuestionId, category.ID)
