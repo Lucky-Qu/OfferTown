@@ -238,3 +238,40 @@ func UpdateQuestion(questionDTO *dto.UpdateQuestionDTO) code.Code {
 	tx.Commit()
 	return code.Success
 }
+
+// GetQuestionsList 获取问题列表
+func GetQuestionsList(questionDTO *dto.GetQuestionsRequestDTO) (*dto.GetQuestionsResponseDTO, code.Code) {
+	count, err := repository.GetQuestionCount(nil)
+	if err != nil {
+		return nil, code.DatabaseError
+	}
+	// 如果页容纳数为0，返回总数
+	if questionDTO.PageSize == 0 {
+		return &dto.GetQuestionsResponseDTO{
+			Questions:  nil,
+			TotalCount: count,
+		}, code.Success
+	}
+	// 如果页数为0，返回全部
+	if questionDTO.Page == 0 {
+		questions, err := repository.GetAllQuestions(nil)
+		if err != nil {
+			return nil, code.DatabaseError
+		}
+		return &dto.GetQuestionsResponseDTO{
+			Questions:  questions,
+			TotalCount: count,
+		}, code.Success
+	}
+	// 返回指定页的数据
+	offset := (questionDTO.Page - 1) * questionDTO.PageSize
+	limit := questionDTO.PageSize
+	questions, err := repository.GetQuestions(nil, offset, limit)
+	if err != nil {
+		return nil, code.DatabaseError
+	}
+	return &dto.GetQuestionsResponseDTO{
+		Questions:  questions,
+		TotalCount: count,
+	}, code.Success
+}

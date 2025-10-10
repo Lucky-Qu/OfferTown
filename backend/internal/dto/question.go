@@ -1,5 +1,7 @@
 package dto
 
+import "backend/internal/model"
+
 // CreateQuestionDTO 新建题目的DTO
 type CreateQuestionDTO struct {
 	AuthorName   string   `json:"author_name"`
@@ -24,4 +26,14 @@ type UpdateQuestionDTO struct {
 	ImageUrl         string   `json:"image_url"`
 	KeyPoint         string   `json:"key_point"`
 	CategoryName     []string `json:"category_name"`
+}
+
+type GetQuestionsRequestDTO struct {
+	Page     int `json:"page"`
+	PageSize int `json:"page_size"`
+}
+
+type GetQuestionsResponseDTO struct {
+	Questions  []model.Question `json:"questions"`
+	TotalCount int64            `json:"total_count"`
 }

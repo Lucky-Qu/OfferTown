@@ -97,3 +97,30 @@ func UpdateQuestionHandler() gin.HandlerFunc {
 		})
 	}
 }
+
+// GetQuestionListHandler 获得题目列表
+func GetQuestionListHandler() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		questionDTO := dto.GetQuestionsRequestDTO{}
+		err := ctx.ShouldBindJSON(&questionDTO)
+		if err != nil {
+			ctx.JSON(code.HttpStatusOK, gin.H{
+				"code":    code.BindFailed,
+				"message": code.BindFailed.Msg(),
+			})
+			return
+		}
+		questions, eCode := service.GetQuestionsList(&questionDTO)
+		if eCode != code.Success {
+			ctx.JSON(code.HttpStatusOK, gin.H{
+				"code":    eCode,
+				"message": eCode.Msg(),
+			})
+		}
+		ctx.JSON(code.HttpStatusOK, gin.H{
+			"code":    code.Success,
+			"message": code.Success.Msg(),
+			"data":    questions,
+		})
+	}
+}

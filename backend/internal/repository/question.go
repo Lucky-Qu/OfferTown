@@ -8,6 +8,8 @@
 // - 根据偏移量和数量获取题目
 // - 通过题目名获取题目
 // - 通过题目名检查题目是否存在
+// - 获取全部题目
+// - 获取全部题目数量
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-26
@@ -89,4 +91,28 @@ func IsQuestionExistByName(tx *gorm.DB, questionName string) (bool, error) {
 		return false, err
 	}
 	return count > 0, nil
+}
+
+// GetAllQuestions 获取全部题目
+func GetAllQuestions(tx *gorm.DB) ([]model.Question, error) {
+	if tx == nil {
+		tx = GetDB()
+	}
+	var questions []model.Question
+	if err := tx.Order("created_at desc").Find(&questions).Error; err != nil {
+		return nil, err
+	}
+	return questions, nil
+}
+
+// GetQuestionCount 获取题目总数
+func GetQuestionCount(tx *gorm.DB) (int64, error) {
+	if tx == nil {
+		tx = GetDB()
+	}
+	var count int64
+	if err := tx.Model(&model.Question{}).Count(&count).Error; err != nil {
+		return 0, err
+	}
+	return count, nil
 }
