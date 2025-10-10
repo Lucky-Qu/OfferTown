@@ -124,7 +124,7 @@ func GetQuestionsByIds(tx *gorm.DB, questionIds []uint) ([]model.Question, error
 		tx = GetDB()
 	}
 	var questions []model.Question
-	if err := tx.Where("id IN (?)", questionIds).Find(&questions).Error; err != nil {
+	if err := tx.Where("id IN ?", questionIds).Find(&questions).Error; err != nil {
 		return nil, err
 	}
 	return questions, nil
