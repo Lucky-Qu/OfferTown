@@ -6,10 +6,11 @@
 // - 通过用户名获得用户对象
 // - 通过用户ID获得用户对象
 // - 通过用户ID更新用户
+// - 批量根据用户Id获取用户
 //
 // 作者: LuckyQu
 // 创建日期: 2025-09-24
-// 修改日期: 2025-10-05
+// 修改日期: 2025-10-10
 
 package repository
 
@@ -69,4 +70,16 @@ func GetUserByUsername(tx *gorm.DB, username string) (*model.User, error) {
 		return nil, err
 	}
 	return &user, nil
+}
+
+// GetUsersByIds 批量根据用户Id获取用户
+func GetUsersByIds(tx *gorm.DB, userIds []uint) ([]model.User, error) {
+	if tx == nil {
+		tx = GetDB()
+	}
+	var users []model.User
+	if err := tx.Where("id IN ?", userIds).Order("created_at desc").Find(&users).Error; err != nil {
+		return nil, err
+	}
+	return users, nil
 }
