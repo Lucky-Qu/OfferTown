@@ -20,7 +20,6 @@ func IsQuestionValid(tx *gorm.DB, question *model.Question) (bool, code.Code) {
 	if tx == nil {
 		tx = repository.GetDB()
 	}
-
 	return true, code.Success
 }
 
@@ -54,4 +53,13 @@ func IsQuestionKeyPointValid(tx *gorm.DB, keyPoint string) (bool, code.Code) {
 		tx = repository.GetDB()
 	}
 	return true, code.Success
+}
+
+// IsQuestionExist 检测题目是否重名
+func IsQuestionExist(tx *gorm.DB, questionTitle string) (bool, code.Code) {
+	isExist, err := repository.IsQuestionExistByName(tx, questionTitle)
+	if err != nil {
+		return false, code.DatabaseError
+	}
+	return isExist, code.Success
 }

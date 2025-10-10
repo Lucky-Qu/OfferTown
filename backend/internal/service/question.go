@@ -54,6 +54,16 @@ func AddNewQuestion(questionDTO *dto.CreateQuestionDTO) code.Code {
 		tx.Rollback()
 		return code.InvalidQuestion
 	}
+	// 检测题目是否重名
+	isExist, eCode := validator.IsQuestionExist(tx, question.Title)
+	if eCode != code.Success {
+		tx.Rollback()
+		return eCode
+	}
+	if isExist {
+		tx.Rollback()
+		return code.QuestionAlreadyExists
+	}
 	// 新建题目
 	err = repository.AddNewQuestion(tx, question)
 	if err != nil {

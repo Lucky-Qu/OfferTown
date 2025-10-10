@@ -27,6 +27,7 @@ const (
 	CategoryNotExist         Code = 2010
 	InvalidQuestion          Code = 2011
 	QuestionNotExists        Code = 2012
+	QuestionAlreadyExists    Code = 2013
 
 	DatabaseError Code = 3001
 
@@ -92,6 +93,8 @@ func (code Code) Msg() string {
 		return "问题信息不合法，请修改后上传"
 	case QuestionNotExists:
 		return "题目不存在"
+	case QuestionAlreadyExists:
+		return "题目名已存在"
 	}
 	return "未知错误"
 }
