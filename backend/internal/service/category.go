@@ -4,10 +4,11 @@
 // - 新增分类
 // - 更新分类中题目
 // - 删除分类
+// - 查询分类
 //
 // 作者: LuckyQu
 // 创建日期: 2025-10-05
-// 修改日期: 2025-10-09
+// 修改日期: 2025-10-10
 package service
 
 import (
@@ -182,4 +183,42 @@ func DeleteCategory(categoryName string) code.Code {
 	// 提交事务
 	tx.Commit()
 	return code.Success
+}
+
+// GetCategoryList 获取分类信息
+func GetCategoryList(categoryDTO *dto.GetCategoryDTORequest) (*dto.GetCategoryDTOResponse, code.Code) {
+	// 获取分类总数
+	count, err := repository.GetCategoryNum(nil)
+	if err != nil {
+		return nil, code.DatabaseError
+	}
+	// 当DTO中页容纳数为0，只返回总数
+	if categoryDTO.PageSize == 0 {
+		return &dto.GetCategoryDTOResponse{
+			Categories: nil,
+			TotalCount: count,
+		}, code.Success
+	}
+	// 当DTO中页数为0，返回全部分类
+	if categoryDTO.Page == 0 {
+		categories, err := repository.GetAllCategories(nil)
+		if err != nil {
+			return nil, code.DatabaseError
+		}
+		return &dto.GetCategoryDTOResponse{
+			Categories: categories,
+			TotalCount: count,
+		}, code.Success
+	}
+	// 根据页数和偏移量返回分类
+	offset := categoryDTO.PageSize * (categoryDTO.Page - 1)
+	limit := categoryDTO.PageSize
+	categories, err := repository.GetCategories(nil, offset, limit)
+	if err != nil {
+		return nil, code.DatabaseError
+	}
+	return &dto.GetCategoryDTOResponse{
+		Categories: categories,
+		TotalCount: count,
+	}, code.Success
 }
