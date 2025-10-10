@@ -9,6 +9,7 @@
 // - 根据参数获取分类
 // - 获取全部分类
 // - 获取分类数量
+// - 批量根据ID获取分类
 //
 // 作者: LuckyQu
 // 创建日期: 2025-10-05
@@ -103,4 +104,16 @@ func GetCategoryNum(tx *gorm.DB) (int64, error) {
 		return 0, err
 	}
 	return categoryCount, nil
+}
+
+// GetCategoriesByIds 批量根据ID获取分类
+func GetCategoriesByIds(tx *gorm.DB, ids []uint) ([]model.Category, error) {
+	if tx == nil {
+		tx = GetDB()
+	}
+	var categories []model.Category
+	if err := tx.Where("id IN ?", ids).Find(&categories).Error; err != nil {
+		return nil, err
+	}
+	return categories, nil
 }
