@@ -79,3 +79,26 @@ func GetCategories(tx *gorm.DB, offset int, limit int) ([]model.Category, error)
 	}
 	return categories, nil
 }
+
+// GetAllCategories 获取全部分类
+func GetAllCategories(tx *gorm.DB) (categories []model.Category, err error) {
+	if tx == nil {
+		tx = GetDB()
+	}
+	if err = tx.Order("created_at desc").Find(&categories).Error; err != nil {
+		return nil, err
+	}
+	return categories, nil
+}
+
+// GetCategoryNum 获取分类数量
+func GetCategoryNum(tx *gorm.DB) (int64, error) {
+	if tx == nil {
+		tx = GetDB()
+	}
+	var categoryCount int64
+	if err := tx.Model(&model.Category{}).Count(&categoryCount).Error; err != nil {
+		return 0, err
+	}
+	return categoryCount, nil
+}

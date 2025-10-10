@@ -105,3 +105,30 @@ func DeleteCategoryHandler() gin.HandlerFunc {
 		})
 	}
 }
+
+// GetCategoryListHandler 根据数量获得分类列表
+func GetCategoryListHandler() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		categoryDTO := dto.GetCategoryDTORequest{}
+		err := ctx.ShouldBindQuery(&categoryDTO)
+		if err != nil {
+			ctx.JSON(code.HttpStatusOK, gin.H{
+				"code":    code.BindFailed,
+				"message": code.BindFailed.Msg(),
+			})
+			return
+		}
+		categoryNames, eCode := service.GetCategoryList(&categoryDTO)
+		if eCode != code.Success {
+			ctx.JSON(code.HttpStatusOK, gin.H{
+				"code":    eCode,
+				"message": eCode.Msg(),
+			})
+		}
+		ctx.JSON(code.HttpStatusOK, gin.H{
+			"code":    code.Success,
+			"message": code.Success.Msg(),
+			"data":    categoryNames,
+		})
+	}
+}
