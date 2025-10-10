@@ -7,6 +7,7 @@
 // - 根据题目ID清除问题关系
 // - 返回与题目相关的所有用户
 // - 根据用户ID获取所有题目
+// - 结合Offset和Limit根据用户it获取题目
 //
 // 作者: LuckyQu
 // 创建日期: 2025-10-05
@@ -68,7 +69,31 @@ func GetQuestionsByUserId(tx *gorm.DB, userId uint) ([]model.UserQuestion, error
 		tx = GetDB()
 	}
 	var userQuestions []model.UserQuestion
-	if err := tx.Where("user_id = ?", userId).Find(&userQuestions).Error; err != nil {
+	if err := tx.Order("created_at desc").Where("user_id = ?", userId).Find(&userQuestions).Error; err != nil {
+		return nil, err
+	}
+	return userQuestions, nil
+}
+
+// GetQuestionsByUserIdWithOffsetAndLimit 结合Offset和Limit根据用户id获取题目
+func GetQuestionsByUserIdWithOffsetAndLimit(tx *gorm.DB, userId uint, offset int, limit int) ([]model.UserQuestion, error) {
+	if tx == nil {
+		tx = GetDB()
+	}
+	var userQuestions []model.UserQuestion
+	if err := tx.Order("created_at desc").Where("user_id = ?", userId).Offset(offset).Limit(limit).Find(&userQuestions).Error; err != nil {
+		return nil, err
+	}
+	return userQuestions, nil
+}
+
+// GetUsersByQuestionIdWithOffsetAndLimit 结合Offset和Limit根据用户id获取题目
+func GetUsersByQuestionIdWithOffsetAndLimit(tx *gorm.DB, questionId uint, offset int, limit int) ([]model.UserQuestion, error) {
+	if tx == nil {
+		tx = GetDB()
+	}
+	var userQuestions []model.UserQuestion
+	if err := tx.Order("created_at desc").Where("question_id = ?", questionId).Offset(offset).Limit(limit).Find(&userQuestions).Error; err != nil {
 		return nil, err
 	}
 	return userQuestions, nil
