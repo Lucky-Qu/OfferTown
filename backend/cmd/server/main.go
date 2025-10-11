@@ -11,12 +11,22 @@ package main
 
 import (
 	"backend/configs"
+	"backend/internal/agent"
 	"backend/internal/cache"
 	"backend/internal/repository"
 	"backend/internal/router"
 )
 
 func main() {
+	//启动服务
+	err := router.Run()
+	//启动失败，触发panic
+	if err != nil {
+		panic(err)
+	}
+}
+
+func init() {
 	//读取配置文档
 	err := configs.InitConfigs()
 	//读取配置文档出错,触发panic
@@ -31,10 +41,6 @@ func main() {
 	}
 	//初始化缓存
 	cache.InitCache()
-	//启动服务
-	err = router.Run()
-	//启动失败，触发panic
-	if err != nil {
-		panic(err)
-	}
+	//初始化Agent
+	agent.InitClient()
 }
