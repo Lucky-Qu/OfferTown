@@ -45,6 +45,8 @@ const (
 	ServerError Code = 8001
 
 	PermissionDenied Code = 9001
+
+	AgentError Code = 10001
 )
 
 // Msg 返回代码对应的信息
@@ -98,6 +100,9 @@ func (code Code) Msg() string {
 		return "题目名已存在"
 	case UnknownTarget:
 		return "未知Target"
+	case AgentError:
+		return "大模型调用出错"
+
 	}
 	return "未知错误"
 }
