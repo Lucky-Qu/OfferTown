@@ -6,7 +6,7 @@
 //
 // 作者: LuckyQu
 // 创建日期: 2025-10-10
-// 修改日期: 2025-10-10
+// 修改日期: 2025-10-11
 package api
 
 import (
@@ -21,7 +21,7 @@ import (
 func GetUsersByQuestion() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		requestDTO := dto.GetUsersByQuestionRequestDTO{}
-		if err := ctx.ShouldBind(&requestDTO); err != nil {
+		if err := ctx.ShouldBindJSON(&requestDTO); err != nil {
 			ctx.JSON(code.HttpStatusOK, gin.H{
 				"code":    code.BindFailed,
 				"message": code.BindFailed.Msg(),
@@ -75,7 +75,37 @@ func GetQuestionsByUser() gin.HandlerFunc {
 
 // SubmitAnswerByUser 用户提交做题答案
 func SubmitAnswerByUser() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		//TODO 判题并添加做题记录
+	return func(ctx *gin.Context) {
+		submitAnswerDTO := dto.SubmitAnswerRequestDTO{}
+		if err := ctx.ShouldBindJSON(&submitAnswerDTO); err != nil {
+			ctx.JSON(code.HttpStatusOK, gin.H{
+				"code":    code.BindFailed,
+				"message": code.BindFailed.Msg(),
+			})
+			return
+		}
+		// 从claims中取出userId
+		claims, exists := ctx.Get("claims")
+		if !exists {
+			ctx.JSON(code.HttpStatusOK, gin.H{
+				"code":    code.UnLoginUser,
+				"message": code.UnLoginUser.Msg(),
+			})
+			return
+		}
+		userId := claims.(*auth.Claims).UserId
+		result, eCode := service.SubmitAnswer(&submitAnswerDTO, userId)
+		if eCode != code.Success {
+			ctx.JSON(code.HttpStatusOK, gin.H{
+				"code":    eCode,
+				"message": eCode.Msg(),
+			})
+			return
+		}
+		ctx.JSON(code.HttpStatusOK, gin.H{
+			"code":    code.Success,
+			"message": code.Success.Msg(),
+			"data":    result,
+		})
 	}
 }
