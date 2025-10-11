@@ -11,7 +11,7 @@
 //
 // 作者: LuckyQu
 // 创建日期: 2025-10-05
-// 修改日期: 2025-10-09
+// 修改日期: 2025-10-11
 package repository
 
 import (
@@ -49,6 +49,18 @@ func DeleteQuestionRelationWithUserById(tx *gorm.DB, questionId uint) error {
 		tx = GetDB()
 	}
 	return tx.Delete(&model.UserQuestion{}, "question_id = ?", questionId).Error
+}
+
+// CheckUserQuestionRelation 根据Id检查是否有这条关系
+func CheckUserQuestionRelation(tx *gorm.DB, userID, questionID uint) (bool, error) {
+	if tx == nil {
+		tx = GetDB()
+	}
+	var count int64
+	if err := tx.Model(&model.UserQuestion{}).Count(&count).Where("user_id = ? AND question_id = ?", userID, questionID).Error; err != nil {
+		return false, err
+	}
+	return count > 0, nil
 }
 
 // GetUsersByQuestionId 返回与题目相关的所有用户
