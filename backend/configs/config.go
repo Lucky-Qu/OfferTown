@@ -23,6 +23,7 @@ type Conf struct {
 	Argon2Id Argon2Id `yaml:"argon2"`
 	JWT      JWT      `yaml:"jwt"`
 	Redis    Redis    `yaml:"redis"`
+	Agent    Agent    `yaml:"agent"`
 }
 
 // Mysql Mysql配置文件类型定义
@@ -58,6 +59,18 @@ type Redis struct {
 	Host     string `yaml:"host"`
 	Port     int    `yaml:"port"`
 	Password string `yaml:"password"`
+}
+
+// Agent 配置
+type Agent struct {
+	ApiKey             string `yaml:"api_key"`
+	ClientTimeout      int    `yaml:"client_timeout"`
+	Model              string `yaml:"model"`
+	EnableThinking     bool   `yaml:"enable_thinking"`
+	MaxTokens          int    `yaml:"max_tokens"`
+	ResponseFormatType string `yaml:"response_format_type"`
+	MaxInputTokens     int    `yaml:"max_input_tokens"`
+	BaseUrl            string `yaml:"base_url"`
 }
 
 // InitConfigs 读取配置文件并保存到全局变量中
