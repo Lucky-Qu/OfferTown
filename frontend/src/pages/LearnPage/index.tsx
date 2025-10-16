@@ -1,13 +1,14 @@
 import NaviBar from "../../components/NaviBar";
 
+/**
+ * 学习模块入口页面。
+ */
 const LearnPage = () => {
-
     return (
         <>
-            <NaviBar />
-            <div>学习页面</div>
+            <NaviBar/>
         </>
-    )
-}
+    );
+};
 
-export default LearnPage
+export default LearnPage;

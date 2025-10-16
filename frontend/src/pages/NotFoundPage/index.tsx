@@ -1,10 +1,15 @@
+import NaviBar from "../../components/NaviBar";
 
+/**
+ * 兜底的 404 页面。
+ */
 const NotFoundPage = () => {
     return (
         <>
-        <div>404页面</div>
+            <NaviBar/>
+            <div>404页面</div>
         </>
-    )
-}
+    );
+};
 
-export default NotFoundPage
+export default NotFoundPage;

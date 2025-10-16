@@ -1,0 +1,28 @@
+.question_item {
+    display: flex;
+    border-bottom: 1px solid #d1d5db;
+    height: 40px;
+    line-height: 40px;
+    padding: 5px 10px;
+}
+
+.question_item_no {
+    width: 10%;
+}
+
+.question_item_title {
+    width: 80%;
+}
+
+.question_item_button {
+    width: 10%;
+    background-color: #F59E0B;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: opacity 0.3s;
+}
+.question_item_button:hover {
+    opacity: 0.8;
+}
