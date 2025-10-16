@@ -1,0 +1,80 @@
+.header {
+    background-color: #2563EB;
+    width: 100vw;
+    height: max(80px, 5.55vh);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header_left_bar {
+    display: flex;
+    align-items: center;
+}
+.header_right_bar {
+    display: flex;
+    align-items: center;
+}
+.logo_name {
+    font-size: 20px;
+    color: white;
+    margin: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.feature_button{
+    font-size: 16px;
+    color: white;
+    margin: 20px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+.feature_button:hover{
+    scale: 1.1;
+}
+
+.search_icon{
+    width: 20px;
+    height: 20px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.search{
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    transition-duration: 0.4s;
+}
+
+.search_input_active{
+    transition: width 0.4s, opacity 0.4s;
+    width: max(50px, 100%);
+    font-size: 16px;
+    border-radius: 12px;
+    opacity: 0.6;
+    border: 0 none;
+    outline: none;
+}
+
+.search_input_inactive{
+    width: 0;
+    height: 0;
+    opacity: 0;
+    border: 0 none;
+    outline: none;
+}
+
+.inactive {
+    display: none;
+}
+
+.logout {
+    margin: 5px;
+}
+.username{
+    font-size: 16px;
+    color: white;
+    margin: 20px;
+}
